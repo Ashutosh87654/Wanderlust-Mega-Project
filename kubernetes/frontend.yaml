@@ -12,13 +12,12 @@ spec:
       app: frontend
   template:
     metadata:
-      name: frontend
       labels:
         app: frontend
     spec:
       containers:
         - name: frontend
-          image: bhupen8765/wanderlust-frontend-beta:5.5
+          image: bhupen8765/wanderlust-frontend-beta:5.4   # Updated image with --host 0.0.0.0
           ports:
             - containerPort: 5173
 ---
@@ -28,12 +27,12 @@ metadata:
   name: frontend-service
   namespace: wanderlust
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # or "classic" if you prefer
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # Use "classic" if you prefer
 spec:
   type: LoadBalancer
   selector:
     app: frontend
   ports:
-    - port: 80               # external port
-      targetPort: 5173       # container port
+    - port: 80            # External port exposed by the ELB
+      targetPort: 5173    # Port your container listens on
       protocol: TCP

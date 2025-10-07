@@ -27,12 +27,13 @@ kind: Service
 metadata:
   name: frontend-service
   namespace: wanderlust
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # or "classic" if you prefer
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: frontend
   ports:
-    - port: 5173
-      targetPort: 5173
+    - port: 80               # external port
+      targetPort: 5173       # container port
       protocol: TCP
-      nodePort: 31000
